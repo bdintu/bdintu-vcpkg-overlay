@@ -1,0 +1,48 @@
+vcpkg_from_git(
+    OUT_SOURCE_PATH SOURCE_PATH
+    URL https://github.com/scylladb/cpp-driver.git
+    REF 4bf44c772d6f5b9ddace963acc292981c35a3a8d
+)
+
+string(COMPARE EQUAL "${VCPKG_LIBRARY_LINKAGE}" "dynamic" SCYLLA_CPP_DRIVER_BUILD_SHARED)
+string(COMPARE EQUAL "${VCPKG_LIBRARY_LINKAGE}" "static" SCYLLA_CPP_DRIVER_BUILD_STATIC)
+
+vcpkg_cmake_configure(
+    SOURCE_PATH "${SOURCE_PATH}"
+    OPTIONS
+        -DCASS_BUILD_EXAMPLES=OFF
+        -DCASS_BUILD_INTEGRATION_TESTS=OFF
+        -DCASS_BUILD_TESTS=OFF
+        -DCASS_BUILD_UNIT_TESTS=OFF
+        -DCASS_BUILD_SHARED=${SCYLLA_CPP_DRIVER_BUILD_SHARED}
+        -DCASS_BUILD_STATIC=${SCYLLA_CPP_DRIVER_BUILD_STATIC}
+        -DCASS_INSTALL_HEADER=ON
+        -DCASS_INSTALL_PKG_CONFIG=ON
+        -DCASS_USE_BOOST_ATOMIC=OFF
+        -DCASS_USE_KERBEROS=OFF
+        -DCASS_USE_LIBSSH2=OFF
+        -DCASS_USE_OPENSSL=ON
+        -DCASS_USE_STATIC_LIBS=${SCYLLA_CPP_DRIVER_BUILD_STATIC}
+        -DCASS_USE_STD_ATOMIC=ON
+        -DCASS_USE_ZLIB=ON
+        -DCASS_CPP_STANDARD=17
+        -DLIBUV_ROOT_DIR=${CURRENT_INSTALLED_DIR}
+        -DOPENSSL_ROOT_DIR=${CURRENT_INSTALLED_DIR}
+        -DZLIB_ROOT_DIR=${CURRENT_INSTALLED_DIR}
+        -DCMAKE_CXX_FLAGS=-Wno-error=redundant-move
+)
+
+vcpkg_cmake_install()
+vcpkg_copy_pdbs()
+vcpkg_fixup_pkgconfig()
+
+file(INSTALL "${CMAKE_CURRENT_LIST_DIR}/scylla-cpp-driver-config.cmake"
+     DESTINATION "${CURRENT_PACKAGES_DIR}/share/${PORT}")
+file(INSTALL "${CMAKE_CURRENT_LIST_DIR}/usage"
+     DESTINATION "${CURRENT_PACKAGES_DIR}/share/${PORT}")
+
+file(REMOVE_RECURSE
+    "${CURRENT_PACKAGES_DIR}/debug/include"
+    "${CURRENT_PACKAGES_DIR}/debug/share")
+
+vcpkg_install_copyright(FILE_LIST "${SOURCE_PATH}/licenses/apache-2.0.txt")

@@ -1,0 +1,22 @@
+{
+  "name": "scylla-cpp-driver",
+  "version": "2.16.2",
+  "port-version": 1,
+  "description": "C/C++ client driver for ScyllaDB and Apache Cassandra.",
+  "homepage": "https://github.com/scylladb/cpp-driver",
+  "license": "Apache-2.0",
+  "supports": "!windows",
+  "dependencies": [
+    "libuv",
+    "openssl",
+    "zlib",
+    {
+      "name": "pkgconf",
+      "host": true
+    },
+    {
+      "name": "vcpkg-cmake",
+      "host": true
+    }
+  ]
+}

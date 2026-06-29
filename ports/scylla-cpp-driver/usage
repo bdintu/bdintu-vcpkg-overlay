@@ -1,0 +1,4 @@
+scylla-cpp-driver provides the CMake target:
+
+  find_package(scylla-cpp-driver CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE scylla-cpp-driver::scylla-cpp-driver)

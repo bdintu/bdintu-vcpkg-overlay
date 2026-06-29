@@ -1,6 +1,6 @@
 # bdintu vcpkg overlay
 
-Shared vcpkg overlay ports and triplets for bdintu C++ projects.
+Shared vcpkg overlay ports and triplets for bdintu C++ projects. Debug triplets use static libraries for easier debugging; release triplets use dynamic libraries so multiple services can share dependency text pages in memory.
 
 ## Layout
 
@@ -26,7 +26,7 @@ These commands assume this overlay repo is checked out next to the project repo:
   drogon-scylladb-crud-basic/
 ```
 
-Use a fresh build directory when changing triplets or build types.
+Use a fresh build directory when changing triplets or build types. Release triplets are dynamic-linkage triplets; package/runtime setup must make the resulting shared libraries available to the service binaries.
 
 macOS ARM64 release build with tests and install:
 
@@ -38,6 +38,8 @@ cmake -S . -B build -G Ninja \
   -DVCPKG_OVERLAY_TRIPLETS="$PWD/../bdintu-vcpkg-overlay/triplets" \
   -DVCPKG_TARGET_TRIPLET=arm64-osx-release \
   && cmake --build build --parallel \
+  && ctest --test-dir build -L unit --output-on-failure \
+  && ctest --test-dir build -L integration --output-on-failure \
   && cmake --install build
 ```
 

@@ -22,6 +22,9 @@ projects.
   or supported triplets change.
 - Keep triplet names explicit about architecture, platform, and build mode, such
   as `arm64-osx-debug` or `x64-linux-release`.
+- Debug triplets should use static libraries for simpler local debugging.
+- Release triplets should use dynamic libraries so multiple deployed services can
+  share dependency text pages in memory.
 - Do not edit the upstream vcpkg checkout under `$VCPKG_ROOT` for project
   behavior. Put reusable changes in this overlay repo instead.
 - Do not add one-off local machine paths to ports, triplets, or README examples

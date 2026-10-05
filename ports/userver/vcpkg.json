@@ -1,0 +1,91 @@
+{
+  "name": "userver",
+  "version": "3.1",
+  "description": "Production-ready asynchronous C++ framework, packaged as installed libraries and CMake targets.",
+  "homepage": "https://userver.tech/",
+  "license": "Apache-2.0",
+  "supports": "!windows",
+  "dependencies": [
+    "boost",
+    "boost-coroutine2",
+    "boost-uuid",
+    "c-ares",
+    "cctz",
+    "cryptopp",
+    "curl",
+    "fmt",
+    "icu",
+    "libev",
+    "libiconv",
+    "nghttp2",
+    "openssl",
+    {
+      "name": "python3",
+      "host": true,
+      "default-features": false
+    },
+    "rapidjson",
+    "re2",
+    "yaml-cpp",
+    "zlib",
+    "zstd",
+    {
+      "name": "vcpkg-cmake",
+      "host": true
+    },
+    {
+      "name": "vcpkg-cmake-config",
+      "host": true
+    }
+  ],
+  "features": {
+    "grpc": {
+      "description": "Build userver gRPC integration (currently unresolved: pinned Google common proto source packaging is required).",
+      "dependencies": [
+        {
+          "name": "grpc",
+          "features": [
+            "codegen"
+          ]
+        },
+        "protobuf"
+      ]
+    },
+    "kafka": {
+      "description": "Build userver Apache Kafka integration.",
+      "dependencies": [
+        "cyrus-sasl",
+        "librdkafka",
+        "lz4"
+      ]
+    },
+    "postgresql": {
+      "description": "Build userver PostgreSQL integration.",
+      "dependencies": [
+        "libpq"
+      ]
+    },
+    "scylla": {
+      "description": "Build userver ScyllaDB integration (currently unresolved: requires a separate scylladb/cpp-rs-driver port)."
+    },
+    "testsuite": {
+      "description": "Enable downstream functional-test infrastructure.",
+      "dependencies": [
+        {
+          "name": "userver",
+          "default-features": false,
+          "features": [
+            "utest"
+          ]
+        }
+      ]
+    },
+    "utest": {
+      "description": "Build userver unit-test and benchmark support libraries.",
+      "dependencies": [
+        "benchmark",
+        "gtest"
+      ]
+    }
+  }
+}

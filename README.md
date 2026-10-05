@@ -81,6 +81,28 @@ cmake -S . -B build-linux-x64-release -G Ninja \
 
 ## Ports
 
+### userver
+
+Packages userver 3.1 from exact commit
+`c9f77729c0edce7e423def2d4a4450aa7fc9d259` as installed CMake package
+targets. `core` and `chaotic` are always included. Optional vcpkg features are
+`postgresql`, `grpc`, `scylla`, `kafka`, `utest`, and `testsuite`.
+
+The initial `grpc` and `scylla` feature entries are explicitly unresolved and
+stop with an explanatory error instead of downloading an unpinned dependency
+or substituting the older native ScyllaDB C++ driver. `postgresql` is currently
+limited to dynamic-linkage triplets because the unpatched upstream integration
+explicitly requires shared libpq.
+
+RealMedium-like installation:
+
+```sh
+vcpkg install 'userver[postgresql,utest,testsuite]' \
+  --overlay-ports="$PWD/../bdintu-vcpkg-overlay/ports" \
+  --overlay-triplets="$PWD/../bdintu-vcpkg-overlay/triplets" \
+  --triplet=arm64-osx-release
+```
+
 ### scylla-cpp-driver
 
 Builds ScyllaDB's C/C++ driver from `https://github.com/scylladb/cpp-driver.git`, pinned to tag `2.16.2-1` commit `4bf44c772d6f5b9ddace963acc292981c35a3a8d`.

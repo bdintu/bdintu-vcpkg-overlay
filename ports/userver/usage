@@ -1,0 +1,22 @@
+userver provides installed CMake package targets. Core and chaotic are always
+included; optional integrations are selected as vcpkg features.
+
+  find_package(userver CONFIG REQUIRED COMPONENTS core postgresql chaotic)
+  target_link_libraries(main PRIVATE userver::core userver::postgresql)
+
+For unit tests and functional tests:
+
+  find_package(userver CONFIG REQUIRED COMPONENTS core)
+  target_link_libraries(service_unittest PRIVATE userver::utest)
+  userver_testsuite_add_simple()
+
+Example installation for a RealMedium-like service:
+
+  vcpkg install userver[postgresql,utest,testsuite]
+
+The grpc and scylla features are declared but intentionally fail with a clear
+unresolved-dependency message until their missing pinned dependencies are
+packaged. The old scylla-cpp-driver overlay is not used by userver[scylla].
+
+The postgresql feature is currently limited to dynamic-linkage triplets because
+the unpatched userver integration explicitly selects a shared libpq.
